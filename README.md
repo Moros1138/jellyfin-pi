@@ -19,9 +19,6 @@ apologize for disappointing you. Check back in the future, as the project mature
 
 ## Goals
 
-I have high hopes for this project. Basically I'd like for it to be as
-close to the web interface, in terms of functionality, as is possible
-for me to acheive.
 I'm sure I'll make compromises, especially early on, but the overarching
 goal is to have a Jellyfin client that renders with Linux DRM/KMS and
 provides functionality on par with that provided by the Jellyfin Web client.
