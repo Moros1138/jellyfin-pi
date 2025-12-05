@@ -11,36 +11,26 @@ find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(MPV REQUIRED mpv)
 pkg_check_modules(LIBCURL REQUIRED libcurl)
-pkg_check_modules(GBM REQUIRED gbm)
-pkg_check_modules(DRM REQUIRED libdrm)
-pkg_check_modules(EGL REQUIRED egl)
 
-add_executable(jellyfin-pi
-    src/main.cpp
+add_subdirectory(raylib)
+
+add_executable(${PROJECT_NAME} src/main.cpp)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE mpv)
+target_compile_options(${PROJECT_NAME} PRIVATE ${MPV_CFLAGS_OTHER})
+target_include_directories(${PROJECT_NAME} PRIVATE ${LIBCURL_INCLUDE_DIRS})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE curl)
+target_compile_options(${PROJECT_NAME} PRIVATE ${LIBCURL_CFLAGS_OTHER})
+target_include_directories(${PROJECT_NAME} PRIVATE ${MPV_INCLUDE_DIRS})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
+
+# Copy assets when not Web platform
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND}
+    ARGS -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/assets
 )
 
-target_include_directories(jellyfin-pi PRIVATE
-    ${MPV_INCLUDE_DIRS}
-    ${LIBCURL_INCLUDE_DIRS}
-    ${GBM_INCLUDE_DIRS}
-    ${DRM_INCLUDE_DIRS}
-    ${EGL_INCLUDE_DIRS}
-)
-
-target_link_libraries(jellyfin-pi PRIVATE
-    ${MPV_LIBRARIES}
-    ${LIBCURL_LIBRARIES}
-    ${GBM_LIBRARIES}
-    ${DRM_LIBRARIES}
-    ${EGL_LIBRARIES}
-    mpv
-    curl
-    gbm
-    drm
-    EGL
-)
-
-target_compile_options(jellyfin-pi PRIVATE
-    ${MPV_CFLAGS_OTHER}
-    ${LIBCURL_CFLAGS_OTHER}
-)

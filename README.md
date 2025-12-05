@@ -53,7 +53,7 @@ provides functionality on par with that provided by the Jellyfin Web client.
 
 3. Generate CMake Configuration/Build files.
    ```sh
-   cmake -S . -B build
+   cmake -S . -B build -DPLATFORM=DRM
    ```
 
 4. Build the client.
